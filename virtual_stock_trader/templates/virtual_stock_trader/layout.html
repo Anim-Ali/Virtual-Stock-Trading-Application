@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Virtual Stock Trader</title>
+        <link rel="stylesheet" href="{% static 'virtual_stock_trader/style.css' %}">
+        {% block header %}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <div id="title">
+                <a href="" id="app-name">VIRTUAL STOCK TRADER</a>
+            </div>
+            <div id="nav-bar">
+                <nav>
+                    <ul class="nav-area">
+                        <li></li>
+                        <li></li>
+                        <li><a href="{% url 'home' %}">HOME</a></li>
+                        <li><a href="{% url 'sentiment' %}">SENTIMENT ANALYSIS</a></li>
+                        <!--
+                        <li><a href="">PREDICTION</a></li>
+                        -->
+                        <a class="btn-area" id="cash-btn">ADD CASH</a>
+                        <!---
+                        <li><a href="{% url 'add cash' %}">ADD CASH</a></li>
+                        -->
+                    </ul>
+                </nav>
+                <a class="btn-area" href="{% url 'logout' %}">LOGOUT</a>
+            </div>
+        </header>
+        {% block body %}
+        {% endblock %}
+        <div class="footer">
+            <p>Author: Hassan Anim Ali</p>
+        </div>
+    </body>
+</html>

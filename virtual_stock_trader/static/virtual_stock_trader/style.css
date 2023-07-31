@@ -1,0 +1,261 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    /*font-family: poppins;*/
+    font-weight: 600;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    display: -webkit-flow;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-area {
+    list-style: none;
+}
+
+.nav-area li {
+    display: inline-block;
+    padding: 0 15px;
+}
+
+.nav-area li a{
+    color: white;
+}
+
+.nav-area li a:hover {
+    color: cyan;
+}
+
+.btn-area {
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    background: black;
+}
+
+.btn-area:hover {
+    color: cyan;
+}
+
+#title {
+    position: relative;
+    overflow: hidden;
+    height: 60px;
+    width: 30%;
+    background-color: white;
+    padding: 30px;
+  }
+  
+#nav-bar:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    -webkit-transform-origin: 100% 0;
+    -ms-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+    -webkit-transform: skew(45deg);
+    -ms-transform: skew(45deg);
+    transform: skew(45deg);
+    z-index: -1;
+}
+
+#nav-bar {
+    display: -webkit-flow;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+#app-name {
+    margin: 15px;
+    font-size: 21px;
+    text-align: center;
+    color: black;
+}
+
+.footer {
+    position: fixed;
+    padding: 5px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    /*font-family: sans-serif;*/
+    /*background: linear-gradient(120deg, #2980b9, #8e44ad);*/
+    height: 100vh;
+    overflow: hidden;
+}
+
+.center-div {
+    position: relative;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+}
+
+.center h1 {
+    text-align: center;
+    padding: 0 0 20px 0;
+    /*border-bottom: 1px solid silver;*/
+}
+
+.center-div h1 {
+    text-align: center;
+    padding: 0 0 20px 0;
+    /*border-bottom: 1px solid silver;*/
+}
+
+.center form {
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.center-div form {
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+form .txt-field {
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+}
+
+.txt-field input {
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.txt-field label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transition: .5s; /* An */
+}
+
+.txt-field span::before {
+    content: '';
+    top: 40px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #2691d9;
+    transition: .5s;
+}
+
+/* An */
+.txt-field input:focus ~ label,
+.txt-field input:valid ~ label{
+    top: -5px;
+    color: #2691d9;
+}
+
+.txt-field input:focus ~ span::before,
+.txt-field input:valid ~ span::before {
+    width: 100%;
+}
+
+.pass {
+    margin: -5px 0 20px 5px;
+    color: #a6a6a6;
+    cursor: pointer;
+}
+
+.pass:hover {
+    text-decoration: underline;
+}
+
+input[type="submit"] {
+    width: 100%;
+    height: 50px;
+    border: 1px solid;
+    background: black;
+    border-radius: 25px;
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+}
+
+
+input[type="submit"]:hover {
+    border-color: black;
+    transition: .5s;
+}
+
+.link {
+    margin: 30px 0;
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+}
+
+.link a {
+    color: #2691d9;
+    text-decoration: none;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+
+

@@ -1,0 +1,49 @@
+
+{% extends "virtual_stock_trader/layout.html" %}
+
+{% block header %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'virtual_stock_trader/sentiment.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+{% endblock %}
+{% block body %}
+    {% if sentimentCount %}
+        <script > 
+            var sentimentCount = JSON.parse("{{sentimentCount|escapejs}}"); 
+            var sentimentScores = JSON.parse("{{sentimentScores|escapejs}}"); 
+        </script>
+        <script defer src="{% static 'virtual_stock_trader/sentiment.js' %}"></script>
+        
+        <div class="grid-container">
+            <div class="grid-item grid-item" id="first-chart">
+                <div class=div-heading>
+                    <h4>SENTIMENT COUNT</h4>
+                </div>
+                <div class="chart-wrapper">
+                    <Canvas id="barChart"></Canvas>
+                </div>
+            </div>
+            <div class="grid-item grid-item" id="second-chart">
+                <div class=div-heading>
+                    <h4>SCATTER CHART</h4>
+                </div>
+                <div class="chart-wrapper">
+                    <Canvas id="scatterChart"></Canvas>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="center">
+            <h1>Sentiment Analysis</h1>
+            <form action="{% url 'sentiment' %}" method="POST" autocomplete="off">
+                {% csrf_token %}
+                <div class="txt-field">
+                    <input type="text" name="keyword" required>
+                    <label>Keyword</label>
+                </div>
+                <input type="submit" value="Get Sentiment Analysis">
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "virtual_stock_trader/login_layout.html" %}
+
+{% block body %}
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+    <div class="center">
+        <h1>Login</h1>
+        <form action="{% url 'register' %}" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="txt-field">
+                <input type="text" name="username" required>
+                <label>Username</label>
+            </div>
+            <div class="txt-field">
+                <input type="password" name="password1" required>
+                <label>Password</label>
+            </div>
+            <div class="txt-field">
+                <input type="password" name="password2" required>
+                <label>Confirm Password</label>
+            </div>
+            <input type="submit" value="Register">
+            <div class="link">
+                Already Registered? <a href="{% url 'login' %}">Login</a>
+            </div>
+        </form>
+    </div>
+
+    
+{% endblock %}

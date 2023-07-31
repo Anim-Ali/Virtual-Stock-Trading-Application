@@ -1,0 +1,38 @@
+.grid-item {
+    border: 1px solid;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 5px 5px #888888;
+    height: 80%;
+}
+
+.grid-container {
+    margin-top: 5%;
+    padding-bottom: 5%;
+    display: grid;
+    grid-template-columns: 50%, 50%;
+    grid-auto-rows: minmax(150px, auto);
+    grid-template-areas: 
+        "chart1 chart2";
+    height: 80vh;
+}
+
+#first-chart {
+    grid-area: chart1;
+}
+
+#second-chart {
+    grid-area: chart2;
+}
+
+.chart-wrapper {
+    margin: 0 auto;
+    width: 80%;
+    
+}
+
+#barChart {
+    height: 25%;
+    width: 25%;
+    transform: scale(0.9);
+}

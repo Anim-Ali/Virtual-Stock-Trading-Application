@@ -1,0 +1,234 @@
+{% extends "virtual_stock_trader/layout.html" %}
+{% block header %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'virtual_stock_trader/home.css' %}">
+    <script defer src="{% static 'virtual_stock_trader/home.js' %}"></script>
+    <script src="https://kit.fontawesome.com/a076d05339.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="{% static 'virtual_stock_trader/jquery-3.5.1.min.js' %}"></script>
+{% endblock %}
+{% block body %}
+<script > 
+    var labels = JSON.parse("{{symbols|escapejs}}"); 
+    var shares = JSON.parse("{{shares|escapejs}}"); 
+</script>
+<div class="grid-container">
+    <div class="grid-item grid-item top-grid-item" id="index">
+        <h3 class="table-heading">INDEX</h3>
+        <div class="scrollable-table">
+            <table class="content-table" id="index-table">
+                <thead>
+                    <tr>
+                        <th>SYMBOL</th>
+                        <th>NAME</th>
+                        <th>SHARES</th>
+                        <!--<th>PRICE</th>-->
+                        <th>SELL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for transaction in portfolio %}  
+                    {% if transaction.shares__sum != 0 %}   
+                        <tr>
+                            <td>{{ transaction.symbol }}</td>
+                            <td>{{transaction.name}}</td>
+                            <td>{{transaction.shares__sum}}</td>
+                            <!--<td>N/A</td>-->
+                            <td><button data-modal-target="#sell-qty" class="sell-btn">SELL</button></td>
+                        </tr>     
+                    {% endif %}          
+                {% empty %}             
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>          
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="grid-item top-grid-item" id="number-portfolio">
+        <div class=div-heading>
+            <h4>PORTFOLIO BY NUMBER OF SHARES</h4>
+        </div>
+        <div class="chart-wrapper">
+            <Canvas id="sharesChart"></Canvas>
+        </div>
+    </div>
+    <!--
+    <div class="grid-item grid-item" id="amount-portfolio">
+        <div class=div-heading>
+            <h4>PORTFOLIO BY AMOUNT</h4>
+        </div>
+        <div class="chart-wrapper">
+            <Canvas id="sharesChart2"></Canvas>
+        </div>
+    </div>
+    -->
+    <div class="grid-item grid-item" id="buy">
+        {% if closing_price and closing_price != 'API Error' %}
+            <div class="price center-div">
+                <h2>CLOSING PRICE</h2>
+                <h1>${{ closing_price }}</h1>
+                <div class="grid-container" id="internal-container">
+                    <div id="q-buy">
+                        <button data-modal-target="#buy-qty" class="buy-btn page-btn">BUY</button></td>
+                    </div>
+                    <div id="q-home">
+                        <form method="get" action="{% url 'home'%}" id="quo-to-home">
+                            <button type="submit" class="page-btn">  BACK  </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="quotation">
+                {% if closing_price == "API Error" %}
+                    <div class="modal active" id="invalid-symbol">
+                        <div class="modal-header">
+                            <div class="modal-title">FAILURE</div>
+                            <button data-close-button class="close-button">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            An error occured! 
+                            There may have been an API error or the symbol you entered is invalid! 
+                            Please try again in a minute!
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="center-div">
+                    <h1>Quotation</h1>
+                    <form action="{% url 'quote' %}" method="POST" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="txt-field">
+                            <input type="text" name="symbol" required>
+                            <label>Ticker Symbol</label>
+                        </div>
+                        <input type="submit" value="Get Quotation">
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="grid-item grid-item" id="history">
+        <h3 class="table-heading">HISTORY</h3>
+        <div class="scrollable-table">
+            <table class="content-table sticky">
+                <thead>
+                    <tr>
+                        <th>SYMBOL</th>
+                        <th>NAME</th>
+                        <th>PRICE</th>
+                        <th>SHARES</th>
+                        <th>DATE</th>
+                    </tr>
+                </thead>
+                <body>
+                {% for transaction in transactions %}     
+                    <tr>
+                        <td>{{ transaction.symbol }}</td>
+                        <td>{{transaction.name}}</td>
+                        <td>{{transaction.price}}</td>
+                        <td>{{transaction.shares}}</td>
+                        <td>{{transaction.date}}</td>
+                    </tr>               
+                {% empty %}             
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>          
+                {% endfor %}
+                </body>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal" id="sell-qty">
+    <div class="modal-header">
+        <div class="modal-title">SELECT QUANTITY</div>
+        <button data-close-button class="close-button">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="center-div">
+            <form action="{% url 'sell' %}" method="POST" autocomplete="off">
+                {% csrf_token %}
+                <input type="hidden" name="symbol" id="sell-form-symbol" value=""/>
+                <div class="txt-field">
+                    <input type="number" name="shares" required>
+                    <label>Number of Shares</label>
+                </div>
+                <input type="submit" value="Sell Shares">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="buy-qty">
+    <div class="modal-header">
+        <div class="modal-title">SELECT QUANTITY</div>
+        <button data-close-button class="close-button">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="center-div">
+            <form action="{% url 'buy' %}" method="POST" autocomplete="off">
+                {% csrf_token %}
+                <input type="hidden" name="symbol" id="buy-form-symbol" value="{{ symbol }}"/>
+                <div class="txt-field">
+                    <input type="number" name="shares" required>
+                    <label>Number of Shares</label>
+                </div>
+                <input type="submit" value="Buy Shares">
+            </form>
+        </div>
+    </div>
+</div>
+    {% if success %}
+        <div class="modal active" id="success">
+            <div class="modal-header">
+                <div class="modal-title">SUCCESS</div>
+                <button data-close-button class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                {{ success }}
+            </div>
+        </div>
+    {% elif failure %}
+        <div class="modal active" id="failure">
+            <div class="modal-header">
+                <div class="modal-title">FAILURE</div>
+                <button data-close-button class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                {{ failure }}
+            </div>
+        </div>
+    {% endif %}
+    {% if success or failure %}
+        <div id="overlay" class="active"></div>
+    {% else %}
+        <div id="overlay"></div>
+    {% endif %}
+    <div class="modal" id="add-cash">
+        <div class="modal-header">
+            <div class="modal-title">ADD CASH</div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="center-div">
+                <form action="{% url 'add cash' %}" method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="txt-field">
+                        <input type="number" name="amount" required>
+                        <label>Amount</label>
+                    </div>
+                    <input type="submit" value="Add Cash">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
